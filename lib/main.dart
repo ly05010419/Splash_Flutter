@@ -61,8 +61,15 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   PageController pageController;
+
   AnimationController animationController;
+  Animation<double> scaleAnimation;
+
   int currentPape = 0;
+
+  double scale = 0;
+
+  bool lastPage = false;
 
   @override
   void initState() {
@@ -73,7 +80,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     );
 
     animationController =
-        AnimationController(duration: Duration(milliseconds: 300), vsync: this);
+        AnimationController(duration: Duration(milliseconds: 100), vsync: this);
+
+    scaleAnimation = Tween(begin: 0.6, end: 1.0).animate(animationController);
   }
 
   @override
@@ -98,6 +107,13 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 onPageChanged: (index) {
                   setState(() {
                     currentPape = index;
+                    if (index == pageList.length - 1) {
+                      lastPage = true;
+                      animationController.reset();
+                      animationController.forward();
+                    } else {
+                      lastPage = false;
+                    }
                   });
                 },
                 itemBuilder: (context, index) {
@@ -111,7 +127,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
                       if (pageController.position.haveDimensions) {
                         delta = pageController.page - index;
-                        y = 1 - delta.abs().clamp(0.0, 1.0);
+
+                        y = delta.abs();
                       }
 
                       return Column(
@@ -151,7 +168,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                               ],
                             ),
                           ),
-                          Transform(
+                          Transform.translate(
+                            offset: Offset(0.0, 50.0 * (1 - y)),
                             child: Padding(
                               padding: const EdgeInsets.only(top: 10, left: 30),
                               child: Text(
@@ -162,8 +180,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                     color: Colors.white30),
                               ),
                             ),
-                            transform:
-                                Matrix4.translationValues(0, 50.0 * (1 - y), 0),
                           ),
                         ],
                       );
@@ -176,6 +192,22 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 child: Container(
                     width: 260,
                     child: PageIndicator(currentPape, pageList.length))),
+            lastPage
+                ? Positioned(
+                    bottom: 30,
+                    right: 30,
+                    child: ScaleTransition(
+                      scale: scaleAnimation,
+                      child: FloatingActionButton(
+                        backgroundColor: Colors.white,
+                        child: Icon(
+                          Icons.arrow_forward_ios,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {},
+                      ),
+                    ),)
+                : Container(),
           ],
         ),
       ),
