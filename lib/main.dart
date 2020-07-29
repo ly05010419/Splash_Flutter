@@ -9,17 +9,17 @@ var pageList = [
   PageModel(
       imageUrl: "assets/illustration.png",
       title: "MUSIC",
-      body: "EXPERIENCE WICKED PLAYLISTS",
+      body: "MUSIC MUSIC MUSIC",
       titleGradient: gradients[0]),
   PageModel(
       imageUrl: "assets/illustration2.png",
-      title: "SPA",
-      body: "FEEL THE MAGIC OF WELLNESS",
+      title: "FARBE",
+      body: "FARBE FARBE FARBE",
       titleGradient: gradients[1]),
   PageModel(
       imageUrl: "assets/illustration3.png",
-      title: "TRAVEL",
-      body: "LET'S HIKE UP",
+      title: "2020",
+      body: "2020 2020 2020",
       titleGradient: gradients[2]),
 ];
 
@@ -92,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-            colors: [Color(0xFF485563), Color(0xFF29323C)],
+            colors: [Color(0xFF485563), Color(0xFF185563)],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             stops: [0.0, 1.0],
@@ -148,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                     gradient: LinearGradient(
                                         colors: page.titleGradient),
                                     style: TextStyle(
-                                        fontSize: 110,
+                                        fontSize: 80,
                                         fontFamily: "Montserrat-Black",
                                         letterSpacing: 1.0),
                                   ),
@@ -188,29 +188,15 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                     },
                   );
                 }),
-            Positioned(
-                left: 35,
-                bottom: 55,
-                child: Container(
-                    width: 260,
-                    child: PageIndicator(currentPape, pageList.length))),
-            lastPage
-                ? Positioned(
-                    bottom: 30,
-                    right: 30,
-                    child: ScaleTransition(
-                      scale: scaleAnimation,
-                      child: FloatingActionButton(
-                        backgroundColor: Colors.white,
-                        child: Icon(
-                          Icons.arrow_forward_ios,
-                          color: Colors.black,
-                        ),
-                        onPressed: () {},
-                      ),
-                    ),
-                  )
-                : Container(),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 30),
+              child: Align(
+                 alignment: Alignment.bottomCenter,
+                  child: Container(
+                      width: 260,
+                      child: PageIndicator(currentPape, pageList.length))),
+            ),
+
           ],
         ),
       ),
